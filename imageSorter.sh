@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Keys
-# -m - move, NOTE: Default is COPY
+# -с - COPY, NOTE: Default is MOVE
 # 
 
 script_name=$0
+SOURCE=$1
+DESTINATION=$2
 
-SOURCE=$PWD
-DESTINATION=$HOME
 IMAGES_TO_PROCESS=();
 
 
@@ -29,21 +29,28 @@ get_image_files(){
   local BMP='*.[bB][mM][pP]'
   local SVG='*.[sS][vV][gG]'
   # extentions array
-  local EXT_ARRAY=($JPG $PNG $GIF $JPEG $BMP $SVG)
+  local EXT_ARRAY=()
+
   # find . -maxdepth 1 -type f -name "*.txt"
   local FILES=()
-  for ext in $EXT_ARRAY; do 
-    FILES=($DESTINATION/$ext)
+  for ext in '*.[jJ][pP][gG]' '*.[pP][nN][gG]' '*.[gG][iI][fF]' '*.[jJ][pP][eE][gG]' '*.[bB][mM][pP]' '*.[sS][vV][gG]'
+  do 
+    FILES=($SOURCE$ext)
+
+   for file in "${FILES[@]}"
+    do
+     IMAGES_TO_PROCESS+=($file)
+    done
+  
   done
-  IMAGES_TO_PROCESS=$FILES;
 }
 
 
 # CODE
 printf "Script: $script_name runned with params \nSource: $SOURCE \nDestination: $DESTINATION \n"
-get_image_files
-  for f in "${IMAGES_TO_PROCESS[@]}"; do
-  echo $(timestamp) $f
-    # anything else you like with these files
-  done 
-
+get_image_files    
+    for file in "${IMAGES_TO_PROCESS[@]}"
+    do
+      echo "Moving file "$file
+      mv $file $DESTINATION
+    done
