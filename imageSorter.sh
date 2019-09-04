@@ -30,15 +30,33 @@ get_image_files(){
   local SVG='*.[sS][vV][gG]'
   # extentions array
   local EXT_ARRAY=()
+  # putting all extesions to array
+  EXT_ARRAY+=($JPG)
+  EXT_ARRAY+=($PNG)
+  EXT_ARRAY+=($GIF)
+  EXT_ARRAY+=($JPEG)
+  EXT_ARRAY+=($BMP)
+  EXT_ARRAY+=($SVG)
 
-  # find . -maxdepth 1 -type f -name "*.txt"
+  printf '%s\n' "${EXT_ARRAY[@]}"
+
+  # Array of file names, where we well pull all files found by extesion
   local FILES=()
-  for ext in '*.[jJ][pP][gG]' '*.[pP][nN][gG]' '*.[gG][iI][fF]' '*.[jJ][pP][eE][gG]' '*.[bB][mM][pP]' '*.[sS][vV][gG]'
+  FILES2=()
+  # Looping throught extesions
+  for ext in ${EXT_ARRAY[@]}
   do 
+    # Selecting all files in SOURCE folder with current extesion
     FILES=($SOURCE$ext)
+    echo Files found : ${#FILES[@]}
 
+    FILES2="$(find . -name \*.txt -o -name \*.bmp -type f)"
    for file in "${FILES[@]}"
     do
+
+
+
+      # Appeding files to a result fila array, which we will procced
      IMAGES_TO_PROCESS+=($file)
     done
   
@@ -46,11 +64,12 @@ get_image_files(){
 }
 
 
-# CODE
+# MAIN CODE
 printf "Script: $script_name runned with params \nSource: $SOURCE \nDestination: $DESTINATION \n"
+# Taking all files to proceed
 get_image_files    
-    for file in "${IMAGES_TO_PROCESS[@]}"
-    do
-      echo "Moving file "$file
-      mv $file $DESTINATION
-    done
+for file in "${IMAGES_TO_PROCESS[@]}"
+  do    
+    echo  `date` "Moving file "$file " to " $DESTINATION
+    mv $file $DESTINATION
+  done
