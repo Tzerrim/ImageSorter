@@ -9,7 +9,7 @@ SOURCE=$1
 DESTINATION=$2
 
 IMAGES_TO_PROCESS=();
-
+FILES_PROCEEDED=0;
 
 # FUNCTIONS
 
@@ -38,23 +38,20 @@ get_image_files(){
   EXT_ARRAY+=($BMP)
   EXT_ARRAY+=($SVG)
 
-  #printf '%s\n' "${EXT_ARRAY[@]}"
-
   # Array of file names, where we well pull all files found by extesion
   local FILES=()
-  FILES2=()
   # Looping throught extesions
   for ext in ${EXT_ARRAY[@]}
   do 
     # Selecting all files in SOURCE folder with current extesion
     FILES=($SOURCE$ext)
-    #echo Files found : ${#FILES[@]}
 
-  #  FILES2="$(find . -name \*.txt -o -name \*.bmp -type f)"
    for file in "${FILES[@]}"
     do
+      if test -f "$file"; then  # Test does this file exists
       # Appeding files to a result fila array, which we will procced
      IMAGES_TO_PROCESS+=($file)
+     fi
     done
   
   done
@@ -69,4 +66,6 @@ for file in "${IMAGES_TO_PROCESS[@]}"
   do    
     echo  $(timestamp) "Moving file "$file " to " $DESTINATION
     mv $file $DESTINATION
+    ((FILES_PROCEEDED++))
   done
+echo Files proceeded: $FILES_PROCEEDED
