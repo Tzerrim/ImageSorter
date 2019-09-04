@@ -38,7 +38,7 @@ get_image_files(){
   EXT_ARRAY+=($BMP)
   EXT_ARRAY+=($SVG)
 
-  printf '%s\n' "${EXT_ARRAY[@]}"
+  #printf '%s\n' "${EXT_ARRAY[@]}"
 
   # Array of file names, where we well pull all files found by extesion
   local FILES=()
@@ -48,14 +48,11 @@ get_image_files(){
   do 
     # Selecting all files in SOURCE folder with current extesion
     FILES=($SOURCE$ext)
-    echo Files found : ${#FILES[@]}
+    #echo Files found : ${#FILES[@]}
 
-    FILES2="$(find . -name \*.txt -o -name \*.bmp -type f)"
+  #  FILES2="$(find . -name \*.txt -o -name \*.bmp -type f)"
    for file in "${FILES[@]}"
     do
-
-
-
       # Appeding files to a result fila array, which we will procced
      IMAGES_TO_PROCESS+=($file)
     done
@@ -70,6 +67,6 @@ printf "Script: $script_name runned with params \nSource: $SOURCE \nDestination:
 get_image_files    
 for file in "${IMAGES_TO_PROCESS[@]}"
   do    
-    echo  `date` "Moving file "$file " to " $DESTINATION
+    echo  $(timestamp) "Moving file "$file " to " $DESTINATION
     mv $file $DESTINATION
   done
